@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	db2 "flipos/internal/adapter/db"
+	"flipos/internal/adapter/db"
 	"flipos/internal/app"
 	"flipos/internal/domain"
 	"fmt"
@@ -43,7 +43,7 @@ func main() {
 			log.Trace().Str("dir", dir.Name()).Msg("Cleaning directory")
 			rd := domain.NewRomDatabase(&config, dir.Name())
 
-			_, err := os.Stat(rd.Path())
+			_, err = os.Stat(rd.Path())
 			if err != nil {
 				if errors.Is(err, os.ErrNotExist) {
 					continue
@@ -60,13 +60,13 @@ func main() {
 }
 
 func cleanNames(log *zerolog.Logger, database domain.RomDatabase) error {
-	gdb, err := db2.Open(log, database.Path())
+	gdb, err := db.Open(log, database.Path())
 	if err != nil {
 		return fmt.Errorf("could not open database %s: %w", database.Path(), err)
 	}
 
 	log.Info().Str("db", database.CodeName).Msg("Finding roms")
-	var roms []db2.Rom
+	var roms []db.Rom
 	result := gdb.Table(database.TableName).Find(&roms)
 	if result.Error != nil {
 		return err
@@ -90,7 +90,7 @@ func cleanNames(log *zerolog.Logger, database domain.RomDatabase) error {
 	return nil
 }
 
-func moveArticle(rom *db2.Rom) {
+func moveArticle(rom *db.Rom) {
 	r := regexp.MustCompile(`,\s(The|A|An)`)
 	article := r.FindStringSubmatch(rom.Disp)
 	if len(article) > 1 {
@@ -101,7 +101,7 @@ func moveArticle(rom *db2.Rom) {
 	}
 }
 
-func removeParenthesis(rom *db2.Rom) {
+func removeParenthesis(rom *db.Rom) {
 	r := regexp.MustCompile(`\s*\(.*\)\s*`)
 	newRomName := r.ReplaceAllString(rom.Disp, "")
 	rom.Disp = newRomName
