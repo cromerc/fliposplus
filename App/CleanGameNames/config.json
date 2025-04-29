@@ -1,0 +1,6 @@
+{
+  "label": "Clean Game Names",
+  "icon": "logo.png",
+  "launch": "CleanNames.sh",
+  "description": "This app will clean the game names"
+}

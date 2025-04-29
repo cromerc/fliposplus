@@ -1,0 +1,7 @@
+.env*
+.idea
+/out
+/cleanup_game_names
+*.zip
+*libretro
+log.txt
