@@ -1,0 +1,6 @@
+{
+  "label": "Order Systems",
+  "icon": "logo.png",
+  "launch": "OrderSystems.sh",
+  "description": "This app will order systems based on the contents of order.txt"
+}
