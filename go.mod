@@ -9,7 +9,6 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.34.0
-	github.com/veandco/go-sdl2 v0.4.40
 	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gorm v1.30.0
 )
