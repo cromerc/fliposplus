@@ -37,6 +37,24 @@ Is there a timeout before the stock os rescans the directory?
 The refresh roms option in the miyoo stock os deletes the cache db files.
 If this happens
 
+## Order systems
+
+### Current features
+Systems will be ordered based on the contents of order.txt.
+The order.txt file will be generated the first time you run the app.
+Modify this file and put the systems in the order you want.
+Run it again and it will order them based on your preference.
+
+### Future development
+
+#### GUI
+A graphical user interface is needed to remove the need of using the order.txt file.
+
+### Stock Behavior
+
+#### Ordering
+The miyoo main ui interface orders the systems alphabetically. So by adding spaces around the name of the system we can force the order we want.
+
 ## Syncthing
 The syncthing app after running will run in the background on port 8384.
 
