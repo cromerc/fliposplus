@@ -43,7 +43,7 @@ func main() {
 
 	orderF, err := os.OpenFile(config.RootPath+"/order.txt", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0640)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Could not open order.txt file")
+		log.Fatal().Err(err).Str("file", "order.txt").Msg("Could not open file")
 	}
 	defer orderF.Close()
 
@@ -69,6 +69,11 @@ func main() {
 
 	for _, dir := range dirs {
 		if dir.IsDir() {
+			_, err = os.Stat(config.RootPath + "/Emu/" + dir.Name() + "/config.json")
+			if err != nil {
+				continue
+			}
+
 			emuDirs[dir.Name()] = struct{}{}
 			log.Trace().Str("dir", dir.Name()).Msg("Found directory")
 
@@ -87,7 +92,13 @@ func main() {
 	d := cmp.Diff(orderDirs, emuDirs)
 	fmt.Println(d)
 
-	for i, system := range systemOrder {
+	i := 0
+	for _, system := range systemOrder {
+		if _, ok := emuDirs[system]; !ok {
+			// The emu directory doesn't exist, skip to the next one
+			continue
+		}
+
 		systemConf, err := readConfig(config, system)
 		if err != nil {
 			log.Fatal().Err(err).Msg("Could not read json config")
@@ -100,6 +111,7 @@ func main() {
 			log.Fatal().Err(err).Msg("Could not write json config")
 		}
 		log.Info().Str("system", system).Msg("Modified json")
+		i++
 	}
 }
 
@@ -155,4 +167,5 @@ func addSpaces(cfg *emu_dir.Config, order, count int) {
 	}
 
 	cfg.Label = sb.String()
+	cfg.ChineseLabel = sb.String()
 }
